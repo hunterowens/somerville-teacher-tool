@@ -43,9 +43,12 @@ class Import < Thor
       end
     end
 
+    Student.update_risk_levels
+    Homeroom.destroy_empty_homerooms
+
     if Rails.env.development?
       puts "#{Student.count} students"
-      puts "#{Assessment.count} assessments"
+      puts "#{StudentAssessment.count} assessments"
       puts "#{DisciplineIncident.count} discipline incidents"
       puts "#{AttendanceEvent.count} attendance events"
     end

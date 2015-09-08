@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150731230529) do
+ActiveRecord::Schema.define(version: 20150830191132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,24 +29,12 @@ ActiveRecord::Schema.define(version: 20150731230529) do
   end
 
   create_table "assessments", force: true do |t|
-    t.integer  "scale_score"
-    t.integer  "growth_percentile"
-    t.string   "performance_level"
-    t.integer  "assessment_family_id"
-    t.integer  "assessment_subject_id"
-    t.datetime "date_taken"
-    t.integer  "student_id"
+    t.string   "name"
+    t.string   "family"
+    t.string   "subject"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "percentile_rank"
-    t.decimal  "instructional_reading_level"
-    t.integer  "school_year_id"
   end
-
-  add_index "assessments", ["assessment_family_id"], name: "index_assessments_on_assessment_family_id", using: :btree
-  add_index "assessments", ["assessment_subject_id"], name: "index_assessments_on_assessment_subject_id", using: :btree
-  add_index "assessments", ["school_year_id"], name: "index_assessments_on_school_year_id", using: :btree
-  add_index "assessments", ["student_id"], name: "index_assessments_on_student_id", using: :btree
 
   create_table "attendance_events", force: true do |t|
     t.integer  "student_id"
@@ -113,12 +101,34 @@ ActiveRecord::Schema.define(version: 20150731230529) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "students_count"
+    t.integer  "students_count", default: 0, null: false
     t.integer  "educator_id"
     t.string   "slug"
+    t.string   "grade"
   end
 
   add_index "homerooms", ["educator_id"], name: "index_homerooms_on_educator_id", using: :btree
+  add_index "homerooms", ["name"], name: "index_homerooms_on_name", unique: true, using: :btree
+  add_index "homerooms", ["slug"], name: "index_homerooms_on_slug", unique: true, using: :btree
+
+  create_table "intervention_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "interventions", force: true do |t|
+    t.integer  "student_id"
+    t.integer  "intervention_type_id"
+    t.text     "comment"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "educator_id"
+    t.integer  "number_of_hours"
+    t.integer  "school_year_id"
+  end
 
   create_table "school_years", force: true do |t|
     t.string   "name"
@@ -139,6 +149,31 @@ ActiveRecord::Schema.define(version: 20150731230529) do
   add_index "schools", ["local_id"], name: "index_schools_on_local_id", using: :btree
   add_index "schools", ["state_id"], name: "index_schools_on_state_id", using: :btree
 
+  create_table "student_assessments", force: true do |t|
+    t.integer  "scale_score"
+    t.integer  "growth_percentile"
+    t.string   "performance_level"
+    t.datetime "date_taken"
+    t.integer  "student_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "percentile_rank"
+    t.decimal  "instructional_reading_level"
+    t.integer  "school_year_id"
+    t.integer  "assessment_id"
+  end
+
+  add_index "student_assessments", ["school_year_id"], name: "index_student_assessments_on_school_year_id", using: :btree
+  add_index "student_assessments", ["student_id"], name: "index_student_assessments_on_student_id", using: :btree
+
+  create_table "student_risk_levels", force: true do |t|
+    t.integer  "student_id"
+    t.text     "explanation"
+    t.integer  "level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "students", force: true do |t|
     t.string   "grade"
     t.boolean  "hispanic_latino"
@@ -146,13 +181,11 @@ ActiveRecord::Schema.define(version: 20150731230529) do
     t.string   "free_reduced_lunch"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "sped"
     t.integer  "homeroom_id"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "state_id"
     t.string   "home_language"
-    t.string   "address"
     t.integer  "school_id"
     t.string   "student_address"
     t.datetime "registration_date"

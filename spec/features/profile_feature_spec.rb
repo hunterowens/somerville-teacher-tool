@@ -62,11 +62,15 @@ describe 'educator views student profile', :type => :feature do
         expect(page).not_to have_css '.star-result-section'
       end
     end
-    context 'student has STAR results' do
+    context 'student has a STAR result' do
       context 'reading' do
         let!(:student) { FactoryGirl.create(:student_ahead_in_reading) }
         it 'shows STAR result' do
           expect(page).to have_css '.star-reading-values'
+        end
+        it 'shows the right reading level' do
+          instructional_reading_level = page.find('.instructional-reading-level')
+          expect(instructional_reading_level).to have_content('6.0')
         end
       end
       context 'math' do
@@ -74,6 +78,30 @@ describe 'educator views student profile', :type => :feature do
         it 'shows STAR result' do
           expect(page).to have_css '.star-math-values'
         end
+      end
+    end
+    context 'student has DIBELS' do
+      let!(:student) { FactoryGirl.create(:student_with_dibels) }
+      it 'shows DIBELS' do
+        expect(page).to have_css '.dibels-values'
+      end
+    end
+    context 'student has no DIBELS' do
+      let!(:student) { FactoryGirl.create(:student_who_registered_in_2013_2014) }
+      it 'doesn\'t show DIBELS' do
+        expect(page).not_to have_css '.dibels-values'
+      end
+    end
+    context 'student has ACCESS' do
+      let!(:student) { FactoryGirl.create(:student_with_access) }
+      it 'shows ACCESS' do
+        expect(page).to have_css '.access-values'
+      end
+    end
+    context 'student has no ACCESS' do
+      let!(:student) { FactoryGirl.create(:student_who_registered_in_2013_2014) }
+      it 'doesn\'t show ACCESS' do
+        expect(page).not_to have_css '.access-values'
       end
     end
   end

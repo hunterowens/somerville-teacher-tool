@@ -27,7 +27,6 @@ body {
   border-radius: 9px;
   padding: 30px;
   border: solid 1px $light-line;
-  margin-top: 30px;
   margin-bottom: 50px;
   overflow: auto;
 }
@@ -70,4 +69,34 @@ body {
 
 .risk-na {
     background-color: $gray;
+}
+
+.hide {
+  display: none;
+}
+
+
+.sessions {
+
+  .info-area {
+    margin-top: 40px;
+  }
+}
+
+.about {
+
+  .info-area {
+    margin-top: 40px;
+  }
+}
+
+
+#log-in {
+  margin: auto auto;
+  width: 134px;
+
+  h2 {
+    margin-bottom: 20px;
+    border-bottom: 1px solid $light-line;
+  }
 }

@@ -1,27 +1,46 @@
 module FindDataForStudentProfile
-  def scope_assessments(assessments_to_scope, family, subject)
-    unless family.is_a?(MissingAssessmentFamily) || subject.is_a?(MissingAssessmentSubject)
-      assessments_to_scope.where(
-        assessment_family_id: family.id,
-        assessment_subject_id: subject.id
-      ).order(date_taken: :desc)
+
+  def mcas_math_result(student)
+    student.student_assessments.latest_mcas_math
+  end
+
+  def mcas_ela_result(student)
+    student.student_assessments.latest_mcas_ela
+  end
+
+  def mcas_math_results(student)
+    student.student_assessments.ordered_mcas_math
+  end
+
+  def mcas_ela_results(student)
+    student.student_assessments.ordered_mcas_ela
+  end
+
+  def star(student)
+    star_math = student.student_assessments.ordered_star_math
+    star_reading = student.student_assessments.ordered_star_reading
+    if !star_math.is_a?(MissingStudentAssessmentCollection) && \
+       !star_reading.is_a?(MissingStudentAssessmentCollection)
+      student.student_assessments.ordered_star_math + student.student_assessments.ordered_star_reading
+    else
+      star_math || star_reading || MissingStudentAssessmentCollection.new
     end
   end
 
-  def mcas_math_results(assessments_to_scope)
-    scope_assessments(assessments_to_scope, AssessmentFamily.mcas, AssessmentSubject.math)
+  def star_reading_results(student)
+    student.student_assessments.ordered_star_reading
   end
 
-  def mcas_ela_results(assessments_to_scope)
-    scope_assessments(assessments_to_scope, AssessmentFamily.mcas, AssessmentSubject.ela)
+  def star_math_results(student)
+    student.student_assessments.ordered_star_math
   end
 
-  def star_math_results(assessments_to_scope)
-    scope_assessments(assessments_to_scope, AssessmentFamily.star, AssessmentSubject.math)
+  def dibels(student)
+    student_assessments.dibels.find_by_student(student).order_or_missing
   end
 
-  def star_reading_results(assessments_to_scope)
-    scope_assessments(assessments_to_scope, AssessmentFamily.star, AssessmentSubject.reading)
+  def access(student)
+    student_assessments.access.find_by_student(student).last_or_missing
   end
 
   def attendance_events_by_school_year

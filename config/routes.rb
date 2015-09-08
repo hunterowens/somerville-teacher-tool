@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :educators
 
   authenticated :educator do
-    root :to => "students#index", as: "roster"
+    root :to => "homerooms#show", as: "roster"
   end
 
   root 'pages#about'
@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   get 'demo' => 'pages#roster_demo'
 
   resources :students
+  resources :homerooms
 
-  resources :homerooms do
-    resources :students
-  end
+  post '/interventions/' => 'interventions#create'
+
 end

@@ -1,0 +1,34 @@
+/* ROSTER */
+
+.roster-chart {
+  height: 150px !important;
+  margin-bottom: 20px !important;
+  padding-bottom: 0 !important;
+  border-bottom: 2px solid $backgroud;
+  margin-top: -40px !important;
+}
+
+.highcharts-container {
+ overflow: visible !important;
+ margin-top: 60px !important;
+}
+
+
+#select-limit-warning.on {
+  color: $warning-red;
+  font-weight: bold;
+}
+
+#column-picker {
+  padding-bottom: 30px;
+  border-bottom: 2px solid $backgroud;
+  display: block;
+  clear: both;
+  margin-bottom: 35px;
+  overflow: visible;
+
+  p {
+    margin-bottom: 5px;
+    color: $light-gray;
+  }
+}

@@ -19,7 +19,9 @@
 //= require tablesort.min
 //= require tablesort.numeric
 //= require mustache.min
+//= require js.cookie
 //= require_tree ./sorts
 //= require roster
 //= require_tree ./charts
 //= require profile
+//= require rounded-corners

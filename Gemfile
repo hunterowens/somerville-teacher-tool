@@ -45,6 +45,7 @@ group :development, :test do
   gem 'timecop'
   gem 'rails-erd'  # to auto-generate ERD and better understand the data structure
   gem 'teaspoon-jasmine'
+  gem 'launchy'
 end
 
 group :development do
@@ -53,6 +54,7 @@ group :development do
   gem 'spring'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'squasher'
 end
 
 # Auth
