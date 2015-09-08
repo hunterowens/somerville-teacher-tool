@@ -44,17 +44,17 @@ class Settings::KippNjSettings
   def configuration
     if @first_time
       [
-        StudentsImporter.new(students_options),
+#        StudentsImporter.new(students_options),
         X2AssessmentImporter.new(assessment_options),
-        BehaviorImporter.new(behavior_options),
-        BulkAttendanceImporter.new(attendance_options)  # Use bulk attendance importer for first-time import
+#        BehaviorImporter.new(behavior_options),
+#        BulkAttendanceImporter.new(attendance_options)  # Use bulk attendance importer for first-time import
       ]
     else
       [
-        StudentsImporter.new(students_options),
+ #       StudentsImporter.new(students_options),
         X2AssessmentImporter.new(assessment_options),
-        BehaviorImporter.new(behavior_options),
-        AttendanceImporter.new(attendance_options)
+ #       BehaviorImporter.new(behavior_options),
+ #       AttendanceImporter.new(attendance_options)
       ]
     end
   end
